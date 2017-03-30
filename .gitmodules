@@ -1,0 +1,3 @@
+[submodule "h2o-tutorials"]
+	path = h2o-tutorials
+	url = https://github.com/lordchao/h2o-tutorials.git

@@ -58,8 +58,18 @@ drug.pca.train <- h2o.deeplearning(x = 2:11, y = 1,
 drug.pca.test <- h2o.deeplearning(x = 2:11, y = 1, training_frame = test.pca.hex,nfolds = 5)
 
 #gbm
-gbm <- h2o.gbm(x = 2:1876, y = 1, training_frame = train.data.hex, validation_frame=test.data.hex, ntrees=500, learn_rate=0.01, score_each_iteration = F)
-gbm <- h2o.gbm(x = 2:11, y = "y", training_frame = train.pca.hex, validation_frame = valid, ntrees=500, learn_rate=0.01, score_each_iteration = TRUE)
+gbm <- h2o.gbm(x = 2:1876, y = 1, 
+               training_frame = train.data.hex, 
+               validation_frame=test.data.hex, 
+               ntrees=500, 
+               learn_rate=0.01, 
+               score_each_iteration = F)
+gbm <- h2o.gbm(x = 2:11, y = "y", 
+               training_frame = train.pca.hex, 
+               validation_frame = valid, 
+               ntrees=500, 
+               learn_rate=0.01, 
+               score_each_iteration = TRUE)
 #random forest
 rf<-h2o.randomForest(2:11,y=1,training_frame = train.pca.hex,ntrees = 1000)              
 #svm
