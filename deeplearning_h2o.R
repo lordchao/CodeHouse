@@ -1,8 +1,6 @@
-<<<<<<< HEAD
+
 setwd('/home/chao/Documents/Project/Data/Compounds Data/')
-=======
-setwd("/home/chao/Documents/Project/Data/Compounds Data/")
->>>>>>> 6dcd30c386010a588112b5dc245352f642df5391
+
 set.seed(2016)
 library(h2o)
 h2o.init()
@@ -62,10 +60,9 @@ drug.pca.train <- h2o.deeplearning(x = 2:11, y = 1,
 drug.pca.test <- h2o.deeplearning(x = 2:11, y = 1, training_frame = test.pca.hex,nfolds = 5)
 
 #gbm
-<<<<<<< HEAD
 gbm <- h2o.gbm(x = 2:1876, y = 1, training_frame = train.data.hex, validation_frame=test.data.hex, ntrees=500, learn_rate=0.01, score_each_iteration = F)
 gbm <- h2o.gbm(x = 2:11, y = "y", training_frame = train.pca.hex, validation_frame = valid, ntrees=500, learn_rate=0.01, score_each_iteration = TRUE)
-=======
+
 gbm <- h2o.gbm(x = 2:1876, y = 1, 
                training_frame = train.data.hex, 
                validation_frame=test.data.hex, 
@@ -78,17 +75,16 @@ gbm <- h2o.gbm(x = 2:11, y = "y",
                ntrees=500, 
                learn_rate=0.01, 
                score_each_iteration = TRUE)
->>>>>>> 6dcd30c386010a588112b5dc245352f642df5391
+
 #random forest
 rf<-h2o.randomForest(2:11,y=1,training_frame = train.pca.hex,ntrees = 1000)              
 #svm
 svm<-svm(y.norm~.,data = train.pca)
 
-<<<<<<< HEAD
+
 #prediction
-=======
 #??????
->>>>>>> 6dcd30c386010a588112b5dc245352f642df5391
+
 predictions.svm<-predict(svm,test.pca)
 predictions.train <- h2o.predict(drug.dl.train, test.data.hex)
 predictions.test <- h2o.predict(drug.dl.test, test.data.hex)

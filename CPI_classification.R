@@ -52,7 +52,7 @@ predictors
 train.hex<-as.h2o(train)
 test.hex<-as.h2o(test)
 validation.hex<-as.h2o(validation)
-  #validation.hex<-as.h2o(validation)
+
 #build model
 #deep learning with three hidden layers for classification
 m1 <- h2o.deeplearning(x = predictors, y = response,
@@ -217,23 +217,33 @@ dlmodel
 #N-fold cross-validation is especially useful with early stopping, as the main model will pick the ideal number of epochs from the convergence behavior of the cross-validation models.
 #
 
-
-
-
-#plugin model
-result.dl<-h2o.predict(model.dl,test.hex)
-result.dl
-result.svm<-predict(model.svm,test[,3:1877])
-result.svm
-#plot roc of dl
-result.dl<-as.data.frame(result.dl) 
-result.dl$predict<-as.numeric(result.dl$predict)
-roc<-roc(test$label,result.dl$predict)#use true label as reponse and predicted real value as predictor
-plot(roc)
-#plot roc of svm
-result.svm<-as.data.frame(result.svm)
-test<-test[intersect(rownames(test),rownames(result.svm)),]#i don;t know why lose 5 data after plugin model but i remove those 5 data from test too so that can plot roc
-result.svm$result.svm<-as.numeric(result.svm$result.svm)
-roc<-roc(test$label,result.svm$result.svm)
-plot(roc)
-
+#build basic binomial glm model
+m4 <- h2o.glm(x = predictors,
+                    y = response,
+                    training_frame = train.hex,
+                    validation_frame = validation.hex,
+                    model_id = "glm",
+                    family = "binomial",
+                    nfold=10,
+                    lambda_search = TRUE) 
+summary(m4)
+h2o.performance(model = m4,
+                newdata = test.hex)
+h2o.auc(m4,train = TRUE)
+# Random Forest
+m5 <- h2o.randomForest(x = predictors,
+                            y = response,
+                            training_frame = train.hex,
+                            model_id = "rf",
+                            validation_frame = validation.hex,  #only used if stopping_rounds > 0
+                            ntrees = 100,
+                            seed = 1,
+                            nfolds = 10)
+summary(m5)
+#naive bayes model
+m6 <- h2o.naiveBayes(x = predictors,
+                          y = response,
+                          training_frame = train.hex,
+                          model_id = "nb",
+                          laplace = 6)
+summary(m6)

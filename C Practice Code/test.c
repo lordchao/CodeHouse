@@ -1,9 +1,18 @@
 #include <stdio.h>
-#include <string.h>
-int main(){
-char dog[]="wang\0miao";
-int a=sizeof(dog);
-int b=strlen(dog);
-printf("%d,%d/n,a,b") ;
-return 0;
+struct mybitfields
+{
+    unsigned short a : 4;
+    unsigned short b : 5;
+    unsigned short c : 7;
+} test;
+ 
+void main(void)
+{
+    int i;
+    test.a = 2;
+    test.b = 3;
+    test.c = 0;
+ 
+    i = *((short *)&test);
+    printf("%d\n", i);
 }
