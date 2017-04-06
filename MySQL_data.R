@@ -1,0 +1,5 @@
+library("RMySQL")
+chembl = dbConnect(MySQL(), user='root', password='liuchao', dbname='chembl_12', host='127.0.0.1')
+dbListTables(chembl)
+dbListFields(chembl,'compound_properties')
+compound_properties<-dbSendQuery(chembl,"select * from compound_properties")
